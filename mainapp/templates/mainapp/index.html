@@ -1,0 +1,127 @@
+{% extends "layouts/layout.html" %}
+
+{% block content %}
+{% load static %}
+<!-- Hero Start -->
+<div class="container-fluid py-5 mb-5 hero-header">
+    <div class="container py-5">
+        <div class="row g-5 align-items-center">
+            <div class="col-md-12 col-lg-7">
+                <h4 class="mb-3 text-secondary">100% Organic Foods</h4>
+                <h1 class="mb-5 display-3 text-primary">Organic Veggies & Fruits Foods</h1>
+                <div class="position-relative mx-auto">
+                    <input class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" type="number" placeholder="Search">
+                    <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 25%;">Submit Now</button>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-5">
+                <!-- Formulario de inicio de sesión -->
+                <form method="post" action="{% url 'iniciar_sesion' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Nombre de usuario</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Nombre de usuario">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+                </form>
+                
+                <!-- Botón de registro -->
+                <a href="{% url 'registro' %}" class="btn btn-secondary mt-3">Registrarse</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Hero End -->
+
+<!-- Fruits Shop Start-->
+<div class="container-fluid fruite py-5">
+    <div class="container py-5">
+        <div class="tab-class text-center">
+            <div class="row g-4">
+                <div class="col-lg-4 text-start">
+                    <h1>Nuestros Productos</h1>
+                </div>
+                <div class="col-lg-8 text-end">
+                    <ul class="nav nav-pills d-inline-flex text-center mb-5">
+                        <li class="nav-item">
+                            <a class="d-flex m-2 py-2 bg-light rounded-pill active" data-bs-toggle="pill" href="#tab-0">
+                                <span class="text-dark" style="width: 130px;">Todas</span>
+                            </a>
+                        </li>
+                        {% for categoria in categorias %}
+                        <li class="nav-item">
+                            <a class="d-flex py-2 m-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-{{categoria.pk}}">
+                                <span class="text-dark" style="width: 130px;">{{categoria.nombre}}</span>
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="tab-content">
+                <div id="tab-0" class="tab-pane fade show p-0 active">
+                    <div class="row g-4">
+                        <div class="col-lg-12">
+                            <div class="row g-4">
+
+                                {% for producto in productos %}
+                                    <div class="col-md-6 col-lg-4 col-xl-3">
+                                        <div class="rounded position-relative fruite-item">
+                                            <div class="fruite-img">
+                                                <img src="img/fruite-item-5.jpg" class="img-fluid w-100 rounded-top" alt="">
+                                            </div>
+                                            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">{{producto.categoria}}</div>
+                                            <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                                <h4>{{producto.nombre}}</h4>
+                                                <p>{{producto.descripcion}}</p>
+                                                <div class="d-flex justify-content-between flex-lg-wrap">
+                                                    <p class="text-dark fs-5 fw-bold mb-0">{{producto.precio}} COP CLU/ Disponibles: {{producto.cantidad}}</p>
+                                                    <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Agregar</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% for categoria in categorias %}
+                <div id="tab-{{categoria.pk}}" class="tab-pane fade show p-0">
+                    <div class="row g-4">
+                        <div class="col-lg-12">
+                            <div class="row g-4">
+                                {% for producto in categoria.producto_set.all %}
+                                    <div class="col-md-6 col-lg-4 col-xl-3">
+                                        <div class="rounded position-relative fruite-item">
+                                            <div class="fruite-img">
+                                                <img src="img/fruite-item-5.jpg" class="img-fluid w-100 rounded-top" alt="">
+                                            </div>
+                                            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">{{categoria.nombre}}</div>
+                                            <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                                <h4>{{producto.nombre}}</h4>
+                                                <p>{{producto.descripcion}}</p>
+                                                <div class="d-flex justify-content-between flex-lg-wrap">
+                                                    <p class="text-dark fs-5 fw-bold mb-0">{{producto.precio}} COP CLU/ Disponibles: {{producto.cantidad}}</p>
+                                                    <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Agregar</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>      
+    </div>
+</div>
+{% endblock content %}
